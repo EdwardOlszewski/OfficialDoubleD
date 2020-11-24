@@ -21,14 +21,14 @@ const Header = () => {
     // pass in custom element to use
   }
 
+  //<Image src='../uploads/NeonMeg logo.png'></Image>
+
   return (
     <header>
       <Navbar className='nav' variant='dark' expand='lg' collapseOnSelect>
         <div className='container'>
           <LinkContainer to='/'>
-            <Navbar.Brand>
-              <Image src='../uploads/NeonMeg logo.png'></Image>
-            </Navbar.Brand>
+            <Navbar.Brand>NeonMegs Shop</Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
