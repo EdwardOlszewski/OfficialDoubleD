@@ -1,6 +1,6 @@
 import Stripe from 'stripe'
 
-const stripe = new Stripe(proccess.env.SECRET_KEY)
+const stripe = new Stripe(process.env.SECRET_KEY)
 
 const createCharge = async (req, res) => {
   const { id, amount, description } = req.body
