@@ -71,7 +71,7 @@ const ProductListScreen = ({ history, match }) => {
   }
 
   return (
-    <>
+    <div className='content'>
       <Row className='align-items-center'>
         <Col>
           <h1>Products</h1>
@@ -110,7 +110,7 @@ const ProductListScreen = ({ history, match }) => {
                     />
                   </td>
                   <td>{product.name}</td>
-                  <td>${product.price}</td>
+                  <td>${(Math.round(product.price * 100) / 100).toFixed(2)}</td>
                   <td>
                     {product.isPublished ? (
                       <i
@@ -147,7 +147,7 @@ const ProductListScreen = ({ history, match }) => {
           <Paginate pages={pages} page={page} isAdmin={true} />
         </>
       )}
-    </>
+    </div>
   )
 }
 

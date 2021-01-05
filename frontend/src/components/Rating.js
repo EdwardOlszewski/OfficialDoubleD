@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Rating = ({ value, text, color }) => {
-  color = 'rgb(140, 0, 255)'
+  color = 'rgb(0, 209, 28)'
   return (
     <div className='rating'>
       <span>

@@ -1,62 +1,41 @@
 import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Table } from 'react-bootstrap'
+import Events from '../components/Events'
+import EventsCarousel from '../components/EventsCarousel'
+import { listEvents } from '../actions/eventActions'
 import { useDispatch, useSelector } from 'react-redux'
-import { Row, Col } from 'react-bootstrap'
-import Product from '../components/Product'
-import Message from '../components/Message'
-import Loader from '../components/Loader'
-import Paginate from '../components/Paginate'
-import ProductCarousel from '../components/ProductCarousel'
-import Meta from '../components/Meta'
-import { listProducts } from '../actions/productActions'
 
-const HomeScreen = ({ match }) => {
-  const keyword = match.params.keyword
-
-  const pageNumber = match.params.pageNumber || 1
-
+const HomeScreen = () => {
   const dispatch = useDispatch()
 
-  const productList = useSelector((state) => state.productList)
-  const { loading, error, products, page, pages } = productList
+  const eventList = useSelector((state) => state.eventList)
+  const { events } = eventList
 
   useEffect(() => {
-    dispatch(listProducts(keyword, pageNumber))
-  }, [dispatch, keyword, pageNumber])
+    dispatch(listEvents())
+  }, [dispatch])
 
   return (
-    <>
-      <Meta />
-      {!keyword ? (
-        <ProductCarousel />
-      ) : (
-        <Link to='/' className='btn btn-light'>
-          Go Back
-        </Link>
-      )}
-      <h1>Welcome To My Shop!</h1>
-
-      {loading ? (
-        <Loader />
-      ) : error ? (
-        <Message variant='danger'>{error}</Message>
-      ) : (
-        <>
-          <Row>
-            {products.map((product) => (
-              <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-                <Product product={product} />
-              </Col>
+    <div>
+      <EventsCarousel />
+      <div className='event-content'>
+        <Table striped bordered hover responsive className='table-sm'>
+          <thead>
+            <tr className='event-table-title'>
+              <th>VENUE</th>
+              <th className='events-address-mobile'>ADDRESS</th>
+              <th>DATE</th>
+              <th>PRICE</th>
+            </tr>
+          </thead>
+          <tbody>
+            {events.map((event) => (
+              <Events event={event} key={event._id} />
             ))}
-          </Row>
-          <Paginate
-            pages={pages}
-            page={page}
-            keyword={keyword ? keyword : ''}
-          />
-        </>
-      )}
-    </>
+          </tbody>
+        </Table>
+      </div>
+    </div>
   )
 }
 

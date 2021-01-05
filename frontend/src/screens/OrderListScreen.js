@@ -5,12 +5,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { listOrders } from '../actions/orderActions'
+import DateFormat from '../components/DateFormat'
+import { ORDER_LIST_RESET } from '../constants/orderConstants'
 
 const OrderListScreen = ({ history }) => {
   const dispatch = useDispatch()
 
   const orderList = useSelector((state) => state.orderList)
-  const { loading, error, orders } = orderList
+  const { loading, success, error, orders } = orderList
+
+  const orderDeliver = useSelector((state) => state.orderDeliver)
+  const { success: orderDeliverSuccess } = orderDeliver
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
@@ -21,10 +26,13 @@ const OrderListScreen = ({ history }) => {
     } else {
       history.push('/login')
     }
-  }, [dispatch, history, userInfo])
+    if (orderDeliverSuccess) {
+      dispatch({ type: ORDER_LIST_RESET })
+    }
+  }, [dispatch, history, userInfo, ORDER_LIST_RESET])
 
   return (
-    <>
+    <div className='content'>
       <h1>Orders</h1>
       {loading ? (
         <Loader />
@@ -48,7 +56,7 @@ const OrderListScreen = ({ history }) => {
               <tr key={order._id}>
                 <td>{order._id}</td>
                 <td>{order.user && order.user.name}</td>
-                <td>{order.createdAt.substring(0, 10)}</td>
+                <td>{DateFormat(order.createdAt)}</td>
                 <td>${order.totalPrice}</td>
                 <td>
                   {order.isPaid ? (
@@ -76,7 +84,7 @@ const OrderListScreen = ({ history }) => {
           </tbody>
         </Table>
       )}
-    </>
+    </div>
   )
 }
 

@@ -4,17 +4,17 @@ import { Card } from 'react-bootstrap'
 import Rating from './Rating'
 
 const Product = ({ product }) => {
-  return (
-    <>
-      {product.isPublished ? (
+  if (product.isPublished) {
+    return (
+      <div>
         <Card className='product'>
           <Link to={`/product/${product._id}`}>
             <Card.Img src={product.image} variant='top' />
           </Link>
           <Card.Body>
             <Link to={`/product/${product._id}`}>
-              <Card.Title className='productTitle' as='div'>
-                <strong>{product.name}</strong>
+              <Card.Title style={{ fontSize: '100%' }} as='div'>
+                {product.name}
               </Card.Title>
             </Link>
             <Card.Text as='div'>
@@ -23,12 +23,16 @@ const Product = ({ product }) => {
                 text={`${product.numReviews} reviews`}
               />
             </Card.Text>
-            <Card.Text className='productPrice'>${product.price}</Card.Text>
+            <Card.Text style={{ paddingTop: '1rem' }}>
+              ${(Math.round(product.price * 100) / 100).toFixed(2)}
+            </Card.Text>
           </Card.Body>
         </Card>
-      ) : null}
-    </>
-  )
+      </div>
+    )
+  } else {
+    return null
+  }
 }
 
 export default Product

@@ -7,8 +7,8 @@ import { saveShippingAddress } from '../actions/cartActions'
 
 const ShippingScreen = ({ history }) => {
   const cart = useSelector((state) => state.cart)
-  const { shippingAddress } = cart
 
+  const { shippingAddress } = cart
   const [address, setAddress] = useState(shippingAddress.address)
   const [city, setCity] = useState(shippingAddress.city)
   const [postalCode, setPostalCode] = useState(shippingAddress.postalCode)
@@ -19,7 +19,7 @@ const ShippingScreen = ({ history }) => {
   const submitHandler = (e) => {
     e.preventDefault()
     dispatch(saveShippingAddress({ address, city, postalCode, country }))
-    history.push('/payment')
+    history.push('/placeorder')
   }
 
   return (
@@ -39,7 +39,7 @@ const ShippingScreen = ({ history }) => {
         </Form.Group>
 
         <Form.Group controlId='city'>
-          <Form.Label>City</Form.Label>
+          <Form.Label>City and State</Form.Label>
           <Form.Control
             type='text'
             placeholder='Enter city'

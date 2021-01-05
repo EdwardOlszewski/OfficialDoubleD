@@ -11,6 +11,7 @@ const orderSchema = mongoose.Schema(
       {
         name: { type: String, required: true },
         qty: { type: Number, required: true },
+        DDColor: { type: String, required: true },
         image: { type: String, required: true },
         price: { type: Number, required: true },
         product: {
@@ -28,14 +29,16 @@ const orderSchema = mongoose.Schema(
     },
     paymentMethod: {
       type: String,
-      required: true,
+      default: 'Card',
     },
+    /*
     paymentResult: {
       id: { type: String },
       status: { type: String },
       update_time: { type: String },
       email_address: { type: String },
     },
+    */
     taxPrice: {
       type: Number,
       required: true,

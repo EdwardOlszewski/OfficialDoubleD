@@ -1,21 +1,17 @@
 main {
   min-height: 80vh;
 }
-
 h3 {
   padding: 1rem 0;
 }
-
 h1 {
   font-size: 1.8rem;
   padding: 1rem 0;
 }
-
 h2 {
   font-size: 1.4rem;
   padding: 0.5rem 0;
 }
-
 .rating span {
   margin: 0.1rem;
 }
@@ -24,7 +20,7 @@ h2 {
 .carousel {
   background-color: rgb(0, 0, 0);
   box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.219);
-  width: 90%;
+  width: 70%;
   text-align: center;
   margin: auto;
 }
@@ -55,68 +51,134 @@ h2 {
   margin: 0 auto;
 }
 
-.nav {
-  background-color: rgb(140, 0, 255);
-  box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.219);
+.bg-primary {
+  height: 9vh;
 }
-.searchButton {
-  background-color: rgb(255, 34, 225);
-  box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.219);
-  border: none;
+
+.nav-icons {
+  padding-right: 2rem;
 }
-.searchButton:hover {
-  background-color: rgb(177, 2, 153);
+.nav-link {
+  font-size: 120%;
 }
-.product {
-  padding: 15px;
-  margin-bottom: 20px;
-  background-color: rgb(255, 255, 255);
-  box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.5);
+.icon {
+  margin-right: 8px;
 }
-.productTitle {
-  color: black;
-}
-.productPrice {
-  color: black;
-  font-size: 150%;
-}
-.mainContainer {
-  width: 70%;
+.content {
   margin: auto;
   text-align: center;
+  width: 80%;
+  margin-top: 1rem;
 }
-.productListImage {
-  width: 30px;
+.event-content {
+  margin: auto;
+  text-align: center;
+  width: 70%;
+  margin-top: 1rem;
 }
-.productEditButton {
-  margin-right: 5px;
+
+.gear {
+  margin: auto;
+  text-align: center;
+  width: 70%;
 }
-.space {
-  height: 30%;
+.gear-heading {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  font-size: 250%;
 }
-.btn-block {
-  background-color: rgb(255, 34, 225);
-  box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.219);
+.rowss {
+  margin-bottom: 20px;
+}
+.categories-card {
+  align-items: center;
+  text-align: center;
+}
+
+.DDicons {
+  margin-top: 5rem;
+  margin-left: 1rem;
+  margin-right: -10rem;
+}
+.embedMap {
+  width: 75%;
+  height: 55vh;
   border: none;
+  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.2);
 }
-.btn-block:hover {
-  background-color: rgb(189, 0, 164);
-}
-.trashButton {
-  box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.219);
-  background-color: rgb(185, 251, 237);
-  border: none;
+.eventTitle {
   color: black;
+  font-weight: bold;
+  display: inline;
+  padding-right: 10px;
 }
-.trashButton:hover {
-  background-color: rgb(0, 255, 200);
-  color: black;
+.event-table-title > th {
+  font-size: 120%;
 }
-@media (max-width: 900px) {
-  .carousel-caption h2 {
-    font-size: 2.5vw;
-  }
+.event-table-body {
+  font-size: 110%;
+}
+.cart-screen {
+  margin: auto;
+  align-items: center;
+  text-align: center;
+  width: 90%;
+}
+.trash-button {
+  display: inline-block;
+  width: 5rem;
+  margin: auto;
+}
+.gear-content {
+  margin: auto;
+  text-align: center;
+  width: 100%;
+}
+.activeButtons {
+  border-bottom: 5px solid rgb(0, 209, 28);
+}
+.payment-div {
+  width: 90%;
+  margin: auto;
+}
+
+@media (max-width: 1000px) {
   .space {
     height: 0px;
+  }
+  .bg-primary {
+    height: auto;
+  }
+
+  .embedMap {
+    width: 100%;
+  }
+  .carousel {
+    width: 90%;
+  }
+  .event-content {
+    width: 90%;
+  }
+  .events-address-mobile {
+    display: none;
+  }
+  .shopping-cart {
+    margin: auto;
+    text-align: center;
+    width: 90%;
+  }
+
+  .category-buttons {
+    font-size: 100%;
+  }
+
+  .content {
+    width: 90%;
+  }
+}
+
+@media (max-width: 1200px) {
+  .checkout {
+    margin-top: 2rem;
   }
 }

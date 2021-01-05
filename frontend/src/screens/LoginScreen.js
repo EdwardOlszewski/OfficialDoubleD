@@ -32,7 +32,7 @@ const LoginScreen = ({ location, history }) => {
   return (
     <FormContainer>
       <div className='space'></div>
-      <h1>Sign In</h1>
+      <h1 style={{ textAlign: 'center' }}>Sign In</h1>
       {error && <Message variant='danger'>{error}</Message>}
       {loading && <Loader />}
       <Form onSubmit={submitHandler}>

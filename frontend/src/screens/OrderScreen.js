@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { PayPalButton } from 'react-paypal-button-v2'
 import { Link } from 'react-router-dom'
-import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap'
+import {
+  Row,
+  Col,
+  ListGroup,
+  Image,
+  Card,
+  Button,
+  Container,
+} from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -15,11 +22,14 @@ import {
   ORDER_PAY_RESET,
   ORDER_DELIVER_RESET,
 } from '../constants/orderConstants'
+import DateFormat from '../components/DateFormat'
+import { Elements } from '@stripe/react-stripe-js'
+
+import PaymentForm from '../components/PaymentForm'
+import { stripePromise } from '../constants/stripeConstants'
 
 const OrderScreen = ({ match, history }) => {
   const orderId = match.params.id
-
-  const [sdkReady, setSdkReady] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -51,36 +61,14 @@ const OrderScreen = ({ match, history }) => {
       history.push('/login')
     }
 
-    const addPayPalScript = async () => {
-      const { data: clientId } = await axios.get('/api/config/paypal')
-      const script = document.createElement('script')
-      script.type = 'text/javascript'
-      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`
-      script.async = true
-      script.onload = () => {
-        setSdkReady(true)
-      }
-      document.body.appendChild(script)
-    }
-
     if (!order || successPay || successDeliver || order._id !== orderId) {
       dispatch({ type: ORDER_PAY_RESET })
       dispatch({ type: ORDER_DELIVER_RESET })
 
       dispatch(getOrderDetails(orderId))
     } else if (!order.isPaid) {
-      if (!window.paypal) {
-        addPayPalScript()
-      } else {
-        setSdkReady(true)
-      }
     }
   }, [dispatch, orderId, successPay, successDeliver, order, history, userInfo])
-
-  const successPaymentHandler = (paymentResult) => {
-    console.log(paymentResult)
-    dispatch(payOrder(orderId, paymentResult))
-  }
 
   const deliverHandler = () => {
     dispatch(deliverOrder(order))
@@ -92,58 +80,21 @@ const OrderScreen = ({ match, history }) => {
   ) : error ? (
     <Message variant='danger'>{error}</Message>
   ) : (
-    <>
-      <h1>Order {order._id}</h1>
+    <div style={{ width: '90%', margin: 'auto', textAlign: 'center' }}>
       <Row>
-        <Col md={8}>
-          <ListGroup variant='flush'>
-            <ListGroup.Item>
-              <h2>Shipping</h2>
-              <p>
-                <strong>Name: </strong> {order.user.name}
-              </p>
-              <p>
-                <strong>Email: </strong>{' '}
-                <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
-              </p>
-              <p>
-                <strong>Address:</strong>
-                {order.shippingAddress.address}, {order.shippingAddress.city}{' '}
-                {order.shippingAddress.postalCode},{' '}
-                {order.shippingAddress.country}
-              </p>
-              {order.isDelivered ? (
-                <Message variant='success'>
-                  Delivered on {order.deliveredAt}
-                </Message>
-              ) : (
-                <Message variant='danger'>Not Delivered</Message>
-              )}
-            </ListGroup.Item>
-
-            <ListGroup.Item>
-              <h2>Payment Method</h2>
-              <p>
-                <strong>Method: </strong>
-                {order.paymentMethod}
-              </p>
-              {order.isPaid ? (
-                <Message variant='success'>Paid on {order.paidAt}</Message>
-              ) : (
-                <Message variant='danger'>Not Paid</Message>
-              )}
-            </ListGroup.Item>
-
+        <Col sm={12} md={12} lg={12} xl={7} style={{ marginTop: '3rem' }}>
+          <ListGroup>
             <ListGroup.Item>
               <h2>Order Items</h2>
               {order.orderItems.length === 0 ? (
                 <Message>Order is empty</Message>
               ) : (
                 <ListGroup variant='flush'>
+                  <ListGroup.Item></ListGroup.Item>
                   {order.orderItems.map((item, index) => (
                     <ListGroup.Item key={index}>
                       <Row>
-                        <Col md={1}>
+                        <Col md={2}>
                           <Image
                             src={item.image}
                             alt={item.name}
@@ -151,27 +102,48 @@ const OrderScreen = ({ match, history }) => {
                             rounded
                           />
                         </Col>
-                        <Col>
-                          <Link to={`/product/${item.product}`}>
+
+                        <Col md={5} style={{ marginTop: '3rem' }}>
+                          <Link
+                            to={`/product/${item.product}`}
+                            style={{ fontSize: '130%' }}
+                          >
                             {item.name}
                           </Link>
+                          <p> Emblem: {item.DDColor}</p>
                         </Col>
-                        <Col md={4}>
-                          {item.qty} x ${item.price} = ${item.qty * item.price}
+                        <Col md={5}>
+                          <p style={{ marginTop: '3rem', fontSize: '130%' }}>
+                            {item.qty} x ${item.price} = $
+                            {item.qty * item.price}{' '}
+                          </p>
                         </Col>
                       </Row>
                     </ListGroup.Item>
                   ))}
+                  <ListGroup.Item>{''}</ListGroup.Item>
                 </ListGroup>
               )}
             </ListGroup.Item>
           </ListGroup>
         </Col>
-        <Col md={4}>
+        <Col
+          sm={12}
+          md={12}
+          lg={8}
+          xl={4}
+          style={{ textAlign: 'center', margin: 'auto', marginTop: '3rem' }}
+        >
           <Card>
-            <ListGroup variant='flush'>
+            <ListGroup variant='flush' style={{ textAlign: 'center' }}>
               <ListGroup.Item>
                 <h2>Order Summary</h2>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Row>
+                  <Col>Order Number</Col>
+                  <Col>{order._id}</Col>
+                </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
@@ -197,17 +169,58 @@ const OrderScreen = ({ match, history }) => {
                   <Col>${order.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
+              <ListGroup.Item>
+                {order.isPaid ? (
+                  <Message variant='success'>
+                    Paid on: {' ' + DateFormat(order.paidAt)}
+                  </Message>
+                ) : (
+                  <Message variant='danger'>Not Paid</Message>
+                )}
+              </ListGroup.Item>
+
+              <ListGroup variant='flush' style={{ textAlign: 'center' }}>
+                <ListGroup.Item>
+                  <h2>Shipping</h2>
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <Row>
+                    <Col>Name</Col>
+                    <Col>{order.user.name}</Col>
+                  </Row>
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <Row>
+                    <Col>Email</Col>
+                    <Col>{order.user.email}</Col>
+                  </Row>
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <Row>
+                    <Col>Address</Col>
+                    <Col>
+                      {order.shippingAddress.address},{' '}
+                      {order.shippingAddress.city}{' '}
+                      {order.shippingAddress.postalCode},{' '}
+                      {order.shippingAddress.country}
+                    </Col>
+                  </Row>
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  {order.isDelivered ? (
+                    <Message variant='success'>
+                      Shipped on: {' ' + DateFormat(order.deliveredAt)}
+                    </Message>
+                  ) : (
+                    <Message variant='danger'>Not Shipped Yet</Message>
+                  )}
+                </ListGroup.Item>
+              </ListGroup>
+
               {!order.isPaid && (
                 <ListGroup.Item>
                   {loadingPay && <Loader />}
-                  {!sdkReady ? (
-                    <Loader />
-                  ) : (
-                    <PayPalButton
-                      amount={order.totalPrice}
-                      onSuccess={successPaymentHandler}
-                    />
-                  )}
+                  {null ? <Loader /> : <></>}
                 </ListGroup.Item>
               )}
               {loadingDeliver && <Loader />}
@@ -227,10 +240,52 @@ const OrderScreen = ({ match, history }) => {
                 )}
             </ListGroup>
           </Card>
+
+          {!order.isPaid && !userInfo.isAdmin ? (
+            <Card style={{ marginTop: '2rem' }}>
+              <ListGroup variant='flush' style={{ textAlign: 'center' }}>
+                <ListGroup.Item>
+                  <h2>Payment</h2>
+                </ListGroup.Item>
+
+                <ListGroup.Item>
+                  <Elements stripe={stripePromise}>
+                    <PaymentForm />
+                  </Elements>
+                </ListGroup.Item>
+              </ListGroup>
+            </Card>
+          ) : null}
         </Col>
       </Row>
-    </>
+    </div>
   )
 }
 
 export default OrderScreen
+
+/*
+<Card style={{ marginTop: '3rem' }}>
+            <ListGroup variant='flush' style={{ textAlign: 'center' }}>
+              <ListGroup.Item>
+                <h2>Payment Method</h2>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Row>
+                  <Col>Method</Col>
+                  <Col>{order.paymentMethod}</Col>
+                </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                {order.isPaid ? (
+                  <Message variant='success'>Paid on {order.paidAt}</Message>
+                ) : (
+                  <Message variant='danger'>Not Paid</Message>
+                )}
+              </ListGroup.Item>
+            </ListGroup>
+          </Card>
+
+
+          
+          */
