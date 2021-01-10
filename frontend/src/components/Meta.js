@@ -12,9 +12,9 @@ const Meta = ({ title, description, keywords }) => {
 }
 
 Meta.defaultProps = {
-  title: 'Welcome To The NeonMeg Shop',
-  description: 'I make and sell Pearl Bead Items',
-  keywords: 'Pokemon, Video Games, Sonic, Pearl Bead ',
+  title: 'Double D',
+  description: 'Double D Productions',
+  keywords: 'Double D, DJ, Gear, Merch ',
 }
 
 export default Meta

@@ -1,23 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import React, { useEffect } from 'react'
+
 import { Link } from 'react-router-dom'
-import {
-  Row,
-  Col,
-  ListGroup,
-  Image,
-  Card,
-  Button,
-  Container,
-} from 'react-bootstrap'
+import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import {
-  getOrderDetails,
-  payOrder,
-  deliverOrder,
-} from '../actions/orderActions'
+import { getOrderDetails, deliverOrder } from '../actions/orderActions'
 import {
   ORDER_PAY_RESET,
   ORDER_DELIVER_RESET,
@@ -241,7 +229,7 @@ const OrderScreen = ({ match, history }) => {
             </ListGroup>
           </Card>
 
-          {!order.isPaid && !userInfo.isAdmin ? (
+          {!order.isPaid && userInfo._id == order.user._id ? (
             <Card style={{ marginTop: '2rem' }}>
               <ListGroup variant='flush' style={{ textAlign: 'center' }}>
                 <ListGroup.Item>

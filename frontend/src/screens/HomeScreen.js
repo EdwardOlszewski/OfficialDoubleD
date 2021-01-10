@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Table } from 'react-bootstrap'
 import Events from '../components/Events'
-import EventsCarousel from '../components/EventsCarousel'
+import ImageCarousel from '../components/ImageCarousel'
 import { listEvents } from '../actions/eventActions'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -17,7 +17,7 @@ const HomeScreen = () => {
 
   return (
     <div>
-      <EventsCarousel />
+      <ImageCarousel />
       <div className='event-content'>
         <Table striped bordered hover responsive className='table-sm'>
           <thead>

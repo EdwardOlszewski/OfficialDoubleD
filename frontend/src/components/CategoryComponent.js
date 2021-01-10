@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { Form, Button, Card, Row, Col, Nav } from 'react-bootstrap'
+import { Form, Card, Row, Nav } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 
 const Catagories = ({ history }) => {
-  const [keyword, setKeyword] = useState('')
+  const [keyword] = useState('')
 
   const submitHandler = (e) => {
     e.preventDefault()

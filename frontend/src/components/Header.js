@@ -75,16 +75,22 @@ const Header = () => {
           )}
         </Nav>
         <div className='nav-icons'>
-          <a href='https://www.google.com' className='icon'>
+          <a
+            href='https://www.instagram.com/doubledofficial__/'
+            className='icon'
+          >
             <Image src={require('../icons/instagram.png')}></Image>
           </a>
-          <a href='https://www.google.com' className='icon'>
+          <a
+            href='https://www.facebook.com/Double-D-110789907445940/?__nodl&ref=www.facebook.com'
+            className='icon'
+          >
             <Image src={require('../icons/facebook.png')}></Image>
           </a>
-          <a href='https://www.google.com' className='icon'>
+          <a href='snapchat://add/DOUBLEDOFFICIAL__' className='icon'>
             <Image src={require('../icons/snapchat.png')}></Image>
           </a>
-          <a href='https://www.google.com' className='icon'>
+          <a href='mailto:doubledoff28@gmail.com' className='icon'>
             <Image src={require('../icons/email.png')}></Image>
           </a>
         </div>

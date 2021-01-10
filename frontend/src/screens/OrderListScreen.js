@@ -12,7 +12,7 @@ const OrderListScreen = ({ history }) => {
   const dispatch = useDispatch()
 
   const orderList = useSelector((state) => state.orderList)
-  const { loading, success, error, orders } = orderList
+  const { loading, error, orders } = orderList
 
   const orderDeliver = useSelector((state) => state.orderDeliver)
   const { success: orderDeliverSuccess } = orderDeliver
@@ -29,7 +29,7 @@ const OrderListScreen = ({ history }) => {
     if (orderDeliverSuccess) {
       dispatch({ type: ORDER_LIST_RESET })
     }
-  }, [dispatch, history, userInfo, ORDER_LIST_RESET])
+  }, [dispatch, history, userInfo, orderDeliverSuccess])
 
   return (
     <div className='content'>

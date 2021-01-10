@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Form, Button, ListGroup } from 'react-bootstrap'
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { useSelector, useDispatch } from 'react-redux'
@@ -6,23 +6,19 @@ import { payOrder, cardCharge } from '../actions/orderActions'
 import { ORDER_CHARGE_RESET } from '../constants/orderConstants'
 import Loader from '../components/Loader'
 
-import axios from 'axios'
-
 const PaymentForm = () => {
   const stripe = useStripe()
   const elements = useElements()
   const dispatch = useDispatch()
 
   const orderCharge = useSelector((state) => state.orderCharge)
-  const { loading, error, success } = orderCharge
+  const { loading, success } = orderCharge
 
   const orderPay = useSelector((state) => state.orderPay)
   const { loading: orderPayLoading } = orderPay
 
   const orderDetails = useSelector((state) => state.orderDetails)
   const { order } = orderDetails
-
-  const [status, setStatus] = useState('ready')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
