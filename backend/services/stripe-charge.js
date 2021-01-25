@@ -17,8 +17,6 @@ const createCharge = async (req, res) => {
       confirm: true,
     })
 
-    console.log(payment)
-
     return res.status(200).json({
       confirm: 'successfull',
     })
