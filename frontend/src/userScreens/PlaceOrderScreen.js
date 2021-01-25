@@ -7,43 +7,42 @@ import CheckoutSteps from '../components/CheckoutSteps'
 import { createOrder } from '../actions/orderActions'
 import { ORDER_CREATE_RESET } from '../constants/orderConstants'
 import { USER_DETAILS_RESET } from '../constants/userConstants'
+import Meta from '../components/Meta'
 
 const PlaceOrderScreen = ({ history }) => {
+  // Assign useDispatch hook to dispatch actions
   const dispatch = useDispatch()
+
+  // Go to cart in the state and pull out information from cart
   const cart = useSelector((state) => state.cart)
-
-  const orderCreate = useSelector((state) => state.orderCreate)
-  const { order, success, error } = orderCreate
-
   if (!cart.shippingAddress.address) {
     history.push('/shipping')
   }
 
-  //   Calculate prices
+  // Go to orderCreate in the state and pull out information
+  const orderCreate = useSelector((state) => state.orderCreate)
+  const { order, success, error } = orderCreate
+
+  // Calculate prices
   const addDecimals = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2)
   }
-
   cart.itemsPrice = addDecimals(
     cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
   )
-  cart.shippingPrice = addDecimals(cart.itemsPrice > 100 ? 0 : 100)
-  cart.taxPrice = addDecimals(Number((0.15 * cart.itemsPrice).toFixed(2)))
-  cart.totalPrice = (
-    Number(cart.itemsPrice) +
-    Number(cart.shippingPrice) +
-    Number(cart.taxPrice)
-  ).toFixed(2)
+  cart.taxPrice = addDecimals(Number((0.0625 * cart.itemsPrice).toFixed(2)))
+  cart.totalPrice = (Number(cart.itemsPrice) + Number(cart.taxPrice)).toFixed(2)
 
+  // useEffect hook to do something after render
   useEffect(() => {
     if (success) {
       history.push(`/order/${order._id}`)
       dispatch({ type: USER_DETAILS_RESET })
       dispatch({ type: ORDER_CREATE_RESET })
     }
-    // eslint-disable-next-line
-  }, [history, success])
+  }, [history, success, dispatch])
 
+  // Function to place order on submit
   const placeOrderHandler = () => {
     dispatch(
       createOrder({
@@ -60,6 +59,7 @@ const PlaceOrderScreen = ({ history }) => {
 
   return (
     <div style={{ width: '90%', margin: 'auto', textAlign: 'center' }}>
+      <Meta title='Place Order' />
       <CheckoutSteps step1 step2 step3 />
       <Row>
         <Col sm={12} md={12} lg={12} xl={7} style={{ marginTop: '3rem' }}>
@@ -163,12 +163,6 @@ const PlaceOrderScreen = ({ history }) => {
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
-                  <Col>Shipping</Col>
-                  <Col>${cart.shippingPrice}</Col>
-                </Row>
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
                   <Col>Tax</Col>
                   <Col>${cart.taxPrice}</Col>
                 </Row>
@@ -199,17 +193,3 @@ const PlaceOrderScreen = ({ history }) => {
 }
 
 export default PlaceOrderScreen
-
-/*
-
-<Button
-                    type='button'
-                    className='btn-block'
-                    disabled={cart.cartItems === 0}
-                    onClick={placeOrderHandler}
-                    form='payment-form'
-                  >
-                    Place Order
-                  </Button>
-
-*/

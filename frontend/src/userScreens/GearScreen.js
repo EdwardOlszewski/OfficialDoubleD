@@ -11,24 +11,28 @@ import Catagories from '../components/CategoryComponent'
 import { listProducts } from '../actions/productActions'
 
 const HomeScreen = ({ match }) => {
-  const keyword = match.params.keyword
-
-  const pageNumber = match.params.pageNumber || 1
-
+  // Assign useDispatch hook to dispatch actions
   const dispatch = useDispatch()
 
+  // Get the keyword from the URL for searching
+  const keyword = match.params.keyword
+
+  // Get page number from the URL
+  const pageNumber = match.params.pageNumber || 1
+
+  // Go to the state and pull out information from productList
   const productList = useSelector((state) => state.productList)
   const { loading, error, products, page, pages } = productList
 
+  // useEffect hook to do something after render
   useEffect(() => {
     dispatch(listProducts(keyword, pageNumber))
   }, [dispatch, keyword, pageNumber])
 
   return (
     <div className='gear'>
-      <Meta />
+      <Meta title='Double D Shop' />
       <h1 className='gear-heading'>Double D Shop</h1>
-
       <Row>
         {loading ? (
           <Loader />

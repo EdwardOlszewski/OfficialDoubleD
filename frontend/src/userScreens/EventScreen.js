@@ -3,24 +3,25 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Row, Col, ListGroup, Card } from 'react-bootstrap'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import Meta from '../components/Meta'
 import GoogleMap from '../components/GoogleMap'
 import DateFormat from '../components/DateFormat'
 import { listEventDetails } from '../actions/eventActions'
+import Meta from '../components/Meta'
 
 const EventScreen = ({ history, match }) => {
+  // Assign useDispatch hook to dispatch actions
   const dispatch = useDispatch()
 
+  // Go to the state and pull out information from eventDetails
   const eventDetails = useSelector((state) => state.eventDetails)
   const { loading, error, event } = eventDetails
 
+  // useEffect hook to do something after render
   useEffect(() => {
     if (!event._id || event._id !== match.params.id) {
       dispatch(listEventDetails(match.params.id))
     }
   }, [dispatch, match, event._id])
-
-  var address = event.address
 
   return (
     <div className='content'>
@@ -33,7 +34,7 @@ const EventScreen = ({ history, match }) => {
         <>
           <Row>
             <Col md={6} style={{ marginTop: '3rem' }}>
-              <GoogleMap address={address} />
+              <GoogleMap address={event.address} />
             </Col>
 
             <Col md={5} style={{ marginTop: '5rem', textAlign: 'left' }}>
@@ -71,22 +72,3 @@ const EventScreen = ({ history, match }) => {
 }
 
 export default EventScreen
-
-/*
- <ListGroup variant='flush'>
-                <ListGroup.Item>
-                  <h1>{event.venue}</h1>
-                </ListGroup.Item>
-                <ListGroup.Item style={{ fontSize: '120%' }}>
-                  <p className='eventTitle'>Address:</p>
-                  {event.address}
-                </ListGroup.Item>
-                <ListGroup.Item style={{ fontSize: '120%' }}>
-                  {event.time}
-                </ListGroup.Item>
-                <ListGroup.Item style={{ fontSize: '120%' }}>
-                  {event.date}
-                </ListGroup.Item>
-              </ListGroup>
-
-*/

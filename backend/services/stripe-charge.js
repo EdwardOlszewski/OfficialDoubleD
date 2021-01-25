@@ -1,9 +1,9 @@
 import Stripe from 'stripe'
+import dotenv from 'dotenv'
 
-const secret = process.env.SECRET_KEY
-const stripe = new Stripe(
-  'sk_test_51I5HSaAJpz0S6tifAuVSi95QJbBc8D288cWllgJq0FSKPsmDkrBF7jPOfHYCRhVrfiatb8rIWzsRC8HlBP0xpsg500gQiOaEBn'
-)
+dotenv.config()
+
+const stripe = new Stripe(process.env.SECRET_KEY)
 
 const createCharge = async (req, res) => {
   const { id, amount, description } = req.body

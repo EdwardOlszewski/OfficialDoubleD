@@ -7,10 +7,16 @@ import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
 import { listProductDetails, updateProduct } from '../actions/productActions'
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
+import Meta from '../components/Meta'
 
 const ProductEditScreen = ({ match, history }) => {
+  // Assign useDispatch hook to dispatch actions
+  const dispatch = useDispatch()
+
+  // get productId from the URL
   const productId = match.params.id
 
+  // Declare new state variables using useState hook
   const [name, setName] = useState('')
   const [price, setPrice] = useState(0)
   const [image, setImage] = useState('')
@@ -21,11 +27,11 @@ const ProductEditScreen = ({ match, history }) => {
   const [description, setDescription] = useState('')
   const [uploading, setUploading] = useState(false)
 
-  const dispatch = useDispatch()
-
+  // go to productDetails in the state and pull out information
   const productDetails = useSelector((state) => state.productDetails)
   const { loading, error, product } = productDetails
 
+  // go to productDetails in the state and pull out information
   const productUpdate = useSelector((state) => state.productUpdate)
   const {
     loading: loadingUpdate,
@@ -33,6 +39,7 @@ const ProductEditScreen = ({ match, history }) => {
     success: successUpdate,
   } = productUpdate
 
+  // useEffect hook to do something after render
   useEffect(() => {
     if (successUpdate) {
       dispatch({ type: PRODUCT_UPDATE_RESET })
@@ -53,22 +60,26 @@ const ProductEditScreen = ({ match, history }) => {
     }
   }, [dispatch, history, productId, product, successUpdate])
 
-  const uploadFileHandler = async (e) => {
-    const file = e.target.files[0]
+  // function to upload image on submit
+  const uploadFileHandler = async ({ target: { id, files } }) => {
+    const file = files[0]
     const formData = new FormData()
     formData.append('image', file)
     setUploading(true)
-
     try {
       const config = {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       }
-
       const { data } = await axios.post('/api/upload', formData, config)
 
-      setImage(data)
+      if (id === 'display') {
+        setImage(data)
+      }
+      if (id === 'page') {
+        setDisplayImage(data)
+      }
       setUploading(false)
     } catch (error) {
       console.error(error)
@@ -76,29 +87,7 @@ const ProductEditScreen = ({ match, history }) => {
     }
   }
 
-  const uploadFileHandler2 = async (e) => {
-    const file = e.target.files[0]
-    const formData = new FormData()
-    formData.append('image', file)
-    setUploading(true)
-
-    try {
-      const config = {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      }
-
-      const { data } = await axios.post('/api/upload', formData, config)
-
-      setDisplayImage(data)
-      setUploading(false)
-    } catch (error) {
-      console.error(error)
-      setUploading(false)
-    }
-  }
-
+  // function to be called on submit
   const submitHandler = (e) => {
     e.preventDefault()
     dispatch(
@@ -118,6 +107,7 @@ const ProductEditScreen = ({ match, history }) => {
 
   return (
     <div className='content'>
+      <Meta title={'Edit ' + name} />
       <FormContainer>
         <h1>Edit Product</h1>
         {loadingUpdate && <Loader />}
@@ -166,7 +156,7 @@ const ProductEditScreen = ({ match, history }) => {
             <Form.Group controlId='image'>
               <Form.Label>Image</Form.Label>
               <Form.File
-                id='image-file'
+                id='display'
                 label='Choose Display Image'
                 custom
                 onChange={uploadFileHandler}
@@ -177,10 +167,10 @@ const ProductEditScreen = ({ match, history }) => {
             <Form.Group controlId='displayImage'>
               <Form.Label>Display Image</Form.Label>
               <Form.File
-                id='image-file2'
+                id='page'
                 label='Choose Page Image'
                 custom
-                onChange={uploadFileHandler2}
+                onChange={uploadFileHandler}
               ></Form.File>
               {uploading && <Loader />}
             </Form.Group>

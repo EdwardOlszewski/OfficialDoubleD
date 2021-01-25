@@ -8,28 +8,36 @@ import { getUserDetails, updateUserProfile } from '../actions/userActions'
 import { listMyOrders } from '../actions/orderActions'
 import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
 import DateFormat from '../components/DateFormat'
+import Meta from '../components/Meta'
 
 const ProfileScreen = ({ location, history }) => {
+  // Assign useDispatch hook to dispatch actions
+  const dispatch = useDispatch()
+
+  // Declare new state variables and functions
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [message, setMessage] = useState(null)
 
-  const dispatch = useDispatch()
-
+  // Go to userDetails in state and pull out information
   const userDetails = useSelector((state) => state.userDetails)
   const { loading, error, user } = userDetails
 
+  // Go to userLogin in state and pull out userInfo
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
+  // Go to userUpdateProfile in state and pull out success
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
   const { success } = userUpdateProfile
 
+  // Go to orderListMy in the state and pull out information
   const orderListMy = useSelector((state) => state.orderListMy)
   const { loading: loadingOrders, error: errorOrders, orders } = orderListMy
 
+  // useEffect hook called after render
   useEffect(() => {
     if (!userInfo) {
       history.push('/login')
@@ -45,6 +53,7 @@ const ProfileScreen = ({ location, history }) => {
     }
   }, [dispatch, history, userInfo, user, success])
 
+  // Function called on submit
   const submitHandler = (e) => {
     e.preventDefault()
     if (password !== confirmPassword) {
@@ -56,6 +65,7 @@ const ProfileScreen = ({ location, history }) => {
 
   return (
     <div className='content'>
+      <Meta title='User Edit' />
       <Row>
         <Col md={3}>
           <h2>User Profile</h2>

@@ -4,18 +4,23 @@ import { useDispatch, useSelector } from 'react-redux'
 import FormContainer from '../components/FormContainer'
 import CheckoutSteps from '../components/CheckoutSteps'
 import { saveShippingAddress } from '../actions/cartActions'
+import Meta from '../components/Meta'
 
 const ShippingScreen = ({ history }) => {
-  const cart = useSelector((state) => state.cart)
+  // Assign useDispatch hook to dispatch actions
+  const dispatch = useDispatch()
 
+  // go to cart in the state and pull out shippingAddress
+  const cart = useSelector((state) => state.cart)
   const { shippingAddress } = cart
+
+  // Declare new state variables and functions
   const [address, setAddress] = useState(shippingAddress.address)
   const [city, setCity] = useState(shippingAddress.city)
   const [postalCode, setPostalCode] = useState(shippingAddress.postalCode)
   const [country, setCountry] = useState(shippingAddress.country)
 
-  const dispatch = useDispatch()
-
+  // Function called on submit
   const submitHandler = (e) => {
     e.preventDefault()
     dispatch(saveShippingAddress({ address, city, postalCode, country }))
@@ -24,6 +29,7 @@ const ShippingScreen = ({ history }) => {
 
   return (
     <FormContainer>
+      <Meta title='Shipping' />
       <CheckoutSteps step1 step2 />
       <h1>Shipping</h1>
       <Form onSubmit={submitHandler}>

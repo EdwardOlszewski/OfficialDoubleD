@@ -5,19 +5,25 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { listUsers, deleteUser } from '../actions/userActions'
+import Meta from '../components/Meta'
 
 const UserListScreen = ({ history }) => {
+  // Assign useDispatch hook to dispatch actions
   const dispatch = useDispatch()
 
+  // Go to userList in the state and pull out data
   const userList = useSelector((state) => state.userList)
   const { loading, error, users } = userList
 
+  // Go to userLogin in the state and pull out UserInfo
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
+  // Go to userDelete in the state and pull out success
   const userDelete = useSelector((state) => state.userDelete)
   const { success: successDelete } = userDelete
 
+  // useEffect hook called after render
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
       dispatch(listUsers())
@@ -26,6 +32,7 @@ const UserListScreen = ({ history }) => {
     }
   }, [dispatch, history, successDelete, userInfo])
 
+  // Function called on delete
   const deleteHandler = (id) => {
     if (window.confirm('Are you sure')) {
       dispatch(deleteUser(id))
@@ -34,6 +41,7 @@ const UserListScreen = ({ history }) => {
 
   return (
     <div className='content'>
+      <Meta title='Users List' />
       <h1>Users</h1>
       {loading ? (
         <Loader />

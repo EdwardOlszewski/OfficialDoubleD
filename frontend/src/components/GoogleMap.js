@@ -1,20 +1,19 @@
 import React from 'react'
 
 const GoogleMap = ({ address }) => {
-  //var API_KEY = process.env.API_KEY
-
-  var eventAddress =
+  const eventAddress =
     'https://www.google.com/maps/embed/v1/place?key=' +
-    'AIzaSyDGXDZGm5ReipAelpD795gNptYZUVkGSw8' +
+    process.env.API_KEY +
     '&q=' +
     address
+
   return (
     <div>
       <iframe
         className='embedMap'
         title={address}
         src={eventAddress}
-        allowfullscreen
+        allowFullScreen
       ></iframe>
     </div>
   )

@@ -1,48 +1,67 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { Row, Col, ListGroup, Image, Form, Button, Card } from 'react-bootstrap'
+import {
+  Row,
+  Col,
+  ListGroup,
+  Image,
+  Form,
+  Button,
+  Card,
+  Container,
+} from 'react-bootstrap'
 import Message from '../components/Message'
 import { addToCart, removeFromCart } from '../actions/cartActions'
+import Meta from '../components/Meta'
 
 const CartScreen = ({ match, location, history }) => {
+  // Assign useDispatch hook to dispatch actions
+  const dispatch = useDispatch()
+
+  // Get product ID from the URL
   const productId = match.params.id
 
+  // Get the qty of each item from the URL
   const qty = location.search
     ? Number(location.search.slice(1).split('&')[0].split('=')[1])
     : 1
+  // Get the emblem color from the URL
   const DDColor = location.search
     ? String(location.search.slice(1).split('&')[1].split('=')[1])
     : 'black'
-  //const qty = location.search ? Number(location.search.split('=')[1]) : 1
-  //const DDColor = location.search ? String(location.search.split('')[1]) : 1
 
-  const dispatch = useDispatch()
-
+  // Go to the cart in the state and select the cartItems
   const cart = useSelector((state) => state.cart)
   const { cartItems } = cart
 
+  // useEffect hook to do something after render
   useEffect(() => {
     if (productId) {
       dispatch(addToCart(productId, qty, DDColor))
     }
   }, [dispatch, productId, qty, DDColor])
 
+  // Function to remove item from cart
   const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id))
   }
 
+  // Function to checkout
   const checkoutHandler = () => {
     history.push('/login?redirect=shipping')
   }
 
   return (
     <div className='cart-screen'>
+      <Meta title='Double D Shopping Cart' />
       <h1>Shopping Cart</h1>
       {cartItems.length === 0 ? (
-        <Message>
-          Your cart is empty <Link to='/gear'>Go Back</Link>
-        </Message>
+        <Container>
+          <Message>
+            Your cart is empty <Link to='/gear'>Go Back</Link>
+          </Message>
+        </Container>
       ) : (
         <Row>
           <Col className='shopping-cart'>

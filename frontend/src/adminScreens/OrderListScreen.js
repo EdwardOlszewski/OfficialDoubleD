@@ -7,19 +7,25 @@ import Loader from '../components/Loader'
 import { listOrders } from '../actions/orderActions'
 import DateFormat from '../components/DateFormat'
 import { ORDER_LIST_RESET } from '../constants/orderConstants'
+import Meta from '../components/Meta'
 
 const OrderListScreen = ({ history }) => {
+  // Assign useDispatch hook to dispatch actions
   const dispatch = useDispatch()
 
+  // Go to orderList in the state and pull out information
   const orderList = useSelector((state) => state.orderList)
   const { loading, error, orders } = orderList
 
+  // Go to orderDeliver in the state and pull out information
   const orderDeliver = useSelector((state) => state.orderDeliver)
   const { success: orderDeliverSuccess } = orderDeliver
 
+  // Go to userLogin in the state and pull out userInfo
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
+  // useEffect do something after render
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
       dispatch(listOrders())
@@ -33,6 +39,7 @@ const OrderListScreen = ({ history }) => {
 
   return (
     <div className='content'>
+      <Meta title='Order List' />
       <h1>Orders</h1>
       {loading ? (
         <Loader />

@@ -5,27 +5,32 @@ import { Row, Col, Image, ListGroup, Card, Button, Form } from 'react-bootstrap'
 import Rating from '../components/Rating'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import Meta from '../components/Meta'
 import {
   listProductDetails,
   createProductReview,
 } from '../actions/productActions'
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
+import Meta from '../components/Meta'
 
 const ProductScreen = ({ history, match }) => {
+  // Assign useDispatch hook to dispatch actions
+  const dispatch = useDispatch()
+
+  // Declare new state variables and functions
   const [qty, setQty] = useState(1)
   const [DDColor, setDDColor] = useState('Black')
   const [rating, setRating] = useState(0)
   const [comment, setComment] = useState('')
 
-  const dispatch = useDispatch()
-
+  // Go to productDetails in the state and pull out information
   const productDetails = useSelector((state) => state.productDetails)
   const { loading, error, product } = productDetails
 
+  // Go to userLogin in the state and pull out information
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
+  // Go to productReviewCreate and pull out information
   const productReviewCreate = useSelector((state) => state.productReviewCreate)
   const {
     success: successProductReview,
@@ -33,6 +38,7 @@ const ProductScreen = ({ history, match }) => {
     error: errorProductReview,
   } = productReviewCreate
 
+  // useEffect hook called after render
   useEffect(() => {
     if (successProductReview) {
       setRating(0)
@@ -44,11 +50,13 @@ const ProductScreen = ({ history, match }) => {
     }
   }, [dispatch, match, successProductReview, product._id])
 
+  // Function to be called on add to cart submit
   const addToCartHandler = () => {
     setDDColor(DDColor)
     history.push(`/cart/${match.params.id}?qty=${qty}&DDColor=${DDColor}`)
   }
 
+  // Function to be called after create review submit
   const submitHandler = (e) => {
     e.preventDefault()
     dispatch(
@@ -262,5 +270,3 @@ const ProductScreen = ({ history, match }) => {
 }
 
 export default ProductScreen
-
-// <Col md={3} style={{ marginTop: '5rem' }}></Col>

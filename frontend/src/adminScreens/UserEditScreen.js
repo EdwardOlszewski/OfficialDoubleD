@@ -6,19 +6,25 @@ import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
 import { getUserDetails, updateUser } from '../actions/userActions'
 import { USER_UPDATE_RESET } from '../constants/userConstants'
+import Meta from '../components/Meta'
 
 const UserEditScreen = ({ match, history }) => {
+  // Assign useDispatch hook to dispatch actions
+  const dispatch = useDispatch()
+
+  // Get userId from the URL
   const userId = match.params.id
 
+  // Declare new state variables and functions
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [isAdmin, setIsAdmin] = useState(false)
 
-  const dispatch = useDispatch()
-
+  // Go to userDetails in the state and pull out information
   const userDetails = useSelector((state) => state.userDetails)
   const { loading, error, user } = userDetails
 
+  // Go to userUpdate in the state and pull out information
   const userUpdate = useSelector((state) => state.userUpdate)
   const {
     loading: loadingUpdate,
@@ -26,6 +32,7 @@ const UserEditScreen = ({ match, history }) => {
     success: successUpdate,
   } = userUpdate
 
+  // useEffect hook called on submit
   useEffect(() => {
     if (successUpdate) {
       dispatch({ type: USER_UPDATE_RESET })
@@ -41,6 +48,7 @@ const UserEditScreen = ({ match, history }) => {
     }
   }, [dispatch, history, userId, user, successUpdate])
 
+  // Function called on submit
   const submitHandler = (e) => {
     e.preventDefault()
     dispatch(updateUser({ _id: userId, name, email, isAdmin }))
@@ -48,6 +56,7 @@ const UserEditScreen = ({ match, history }) => {
 
   return (
     <div className='content'>
+      <Meta title={'Edit ' + name} />
       <FormContainer>
         <h1>Edit User</h1>
         {loadingUpdate && <Loader />}
