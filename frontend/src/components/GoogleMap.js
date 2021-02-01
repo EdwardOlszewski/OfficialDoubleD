@@ -6,7 +6,7 @@ dotenv.config()
 const GoogleMap = ({ address }) => {
   const eventAddress =
     'https://www.google.com/maps/embed/v1/place?key=' +
-    process.env.API_KEY +
+    'AIzaSyDGXDZGm5ReipAelpD795gNptYZUVkGSw8' +
     '&q=' +
     address
 
