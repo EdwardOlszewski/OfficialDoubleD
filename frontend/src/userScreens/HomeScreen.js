@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
-import { Row, Col, Container } from 'react-bootstrap'
+import { Row, Col, Container, Card } from 'react-bootstrap'
 import Events from '../components/Events'
 import ImageCarousel from '../components/ImageCarousel'
 import { listEvents } from '../actions/eventActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Meta from '../components/Meta'
+import Message from '../components/Message'
 
 const HomeScreen = () => {
   // Assign useDispatch hook to dispatch actions
@@ -49,7 +50,9 @@ const HomeScreen = () => {
             ))}
           </Row>
         ) : (
-          <h1> no events</h1>
+          <Container>
+            <Message>There are currently no events, check back later!</Message>
+          </Container>
         )}
       </Container>
     </div>
