@@ -35,7 +35,7 @@ const CartScreen = ({ match, location, history }) => {
   const cart = useSelector((state) => state.cart)
   const { cartItems } = cart
 
-  // useEffect hook to do something after render
+  // useEffect hook to do something
   useEffect(() => {
     if (productId) {
       dispatch(addToCart(productId, qty, DDColor))
