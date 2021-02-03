@@ -63,6 +63,16 @@ const orderSchema = mongoose.Schema(
     deliveredAt: {
       type: Date,
     },
+    billingDetails: {
+      name: { type: String, default: '' },
+      email: { type: String, default: '' },
+      address: {
+        city: { type: String, default: '' },
+        line1: { type: String, default: '' },
+        state: { type: String, default: '' },
+        postal_code: { type: String, default: '' },
+      },
+    },
   },
   {
     timestamps: true,

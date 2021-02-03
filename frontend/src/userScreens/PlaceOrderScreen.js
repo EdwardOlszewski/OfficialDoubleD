@@ -8,6 +8,7 @@ import { createOrder } from '../actions/orderActions'
 import { ORDER_CREATE_RESET } from '../constants/orderConstants'
 import { USER_DETAILS_RESET } from '../constants/userConstants'
 import Meta from '../components/Meta'
+import { CART_REMOVE_ITEM } from '../constants/cartConstants'
 
 const PlaceOrderScreen = ({ history }) => {
   // Assign useDispatch hook to dispatch actions
@@ -36,7 +37,7 @@ const PlaceOrderScreen = ({ history }) => {
   // useEffect hook to do something after render
   useEffect(() => {
     if (success) {
-      history.push(`/order/${order._id}`)
+      history.push(`/payment/${order._id}`)
       dispatch({ type: USER_DETAILS_RESET })
       dispatch({ type: ORDER_CREATE_RESET })
     }
@@ -53,6 +54,16 @@ const PlaceOrderScreen = ({ history }) => {
         shippingPrice: cart.shippingPrice,
         taxPrice: cart.taxPrice,
         totalPrice: cart.totalPrice,
+        billingDetails: {
+          name: '',
+          email: '',
+          address: {
+            city: '',
+            line1: '',
+            state: '',
+            postal_code: '',
+          },
+        },
       })
     )
   }
@@ -61,8 +72,11 @@ const PlaceOrderScreen = ({ history }) => {
     <div style={{ width: '90%', margin: 'auto', textAlign: 'center' }}>
       <Meta title='Place Order' />
       <CheckoutSteps step1 step2 step3 />
+      <div style={{ textAlign: 'center' }}>
+        <h1>Review</h1>
+      </div>
       <Row>
-        <Col sm={12} md={12} lg={12} xl={7} style={{ marginTop: '3rem' }}>
+        <Col sm={12} md={12} lg={12} xl={7}>
           <Card>
             <ListGroup variant='flush'>
               <ListGroup.Item>
@@ -116,7 +130,7 @@ const PlaceOrderScreen = ({ history }) => {
           md={12}
           lg={8}
           xl={4}
-          style={{ textAlign: 'center', margin: 'auto', marginTop: '3rem' }}
+          style={{ textAlign: 'center', margin: 'auto' }}
         >
           <Card>
             <ListGroup variant='flush'>

@@ -13,6 +13,9 @@ const addOrderItems = asyncHandler(async (req, res) => {
     taxPrice,
     shippingPrice,
     totalPrice,
+    billingName,
+    billingEmail,
+    billingAddress,
   } = req.body
 
   if (orderItems && orderItems.length === 0) {
@@ -29,6 +32,9 @@ const addOrderItems = asyncHandler(async (req, res) => {
       taxPrice,
       shippingPrice,
       totalPrice,
+      billingName,
+      billingEmail,
+      billingAddress,
     })
 
     const createdOrder = await order.save()
@@ -55,7 +61,7 @@ const getOrderById = asyncHandler(async (req, res) => {
 })
 
 // @desc    Update order to paid
-// @route   GET /api/orders/:id/pay
+// @route   PUT /api/orders/:id/pay
 // @access  Private
 const updateOrderToPaid = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id)
@@ -63,20 +69,35 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
   if (order) {
     order.isPaid = true
     order.paidAt = Date.now()
-    /*
-    order.paymentResult = {
-      id: req.body.id,
-      status: req.body.status,
-      update_time: req.body.update_time,
-      email_address: req.body.payer.email_address,
-    }
-*/
     const updatedOrder = await order.save()
 
     res.json(updatedOrder)
   } else {
     res.status(404)
     throw new Error('Order not found')
+  }
+})
+
+// @desc    Update order to paid
+// @route   PUT /api/orders/:id/pay
+// @access  Private
+const updateOrderBilling = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id)
+  const { name, email, city, street, state, postal_code } = req.body
+
+  if (order) {
+    order.billingDetails.name = name
+    order.billingDetails.email = email
+    order.billingDetails.address.city = city
+    order.billingDetails.address.line1 = street
+    order.billingDetails.address.state = state
+    order.billingDetails.address.postal_code = postal_code
+
+    const updatedOrder = await order.save()
+    res.json(updatedOrder)
+  } else {
+    res.status(404)
+    throw new Error('Order billing info not updated')
   }
 })
 
@@ -122,4 +143,5 @@ export {
   updateOrderToDelivered,
   getMyOrders,
   getOrders,
+  updateOrderBilling,
 }

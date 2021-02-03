@@ -31,7 +31,10 @@ const ShippingScreen = ({ history }) => {
     <FormContainer>
       <Meta title='Shipping' />
       <CheckoutSteps step1 step2 />
-      <h1>Shipping</h1>
+      <div style={{ textAlign: 'center' }}>
+        <h1>Shipping</h1>
+      </div>
+
       <Form onSubmit={submitHandler}>
         <Form.Group controlId='address'>
           <Form.Label>Address</Form.Label>

@@ -20,18 +20,30 @@ const PaymentForm = () => {
   const orderDetails = useSelector((state) => state.orderDetails)
   const { order } = orderDetails
 
+  const billingDetails = {
+    name: 'Ed',
+    email: 'olszewski.edward@hotmail.com',
+    address: {
+      city: 'burbank',
+      line1: '7930 Long Ave',
+      state: 'Ill',
+      postal_code: '60459',
+    },
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: 'card',
       card: elements.getElement(CardElement),
+      billing_details: billingDetails,
     })
 
     if (!error) {
       const { id } = paymentMethod
       var amount = parseInt(order.totalPrice * 100)
-      dispatch(cardCharge(id, amount, order._id))
+      dispatch(cardCharge(id, amount, order._id, billingDetails))
     }
   }
 

@@ -25,6 +25,10 @@ import {
   ORDER_CHARGE_SUCCESS,
   ORDER_CHARGE_FAIL,
   ORDER_CHARGE_RESET,
+  ORDER_BILLING_REQUEST,
+  ORDER_BILLING_SUCCESS,
+  ORDER_BILLING_FAIL,
+  ORDER_BILLING_RESET,
 } from '../constants/orderConstants'
 
 export const orderCreateReducer = (state = {}, action) => {
@@ -186,6 +190,29 @@ export const orderChargeReducer = (state = {}, action) => {
         error: action.payload,
       }
     case ORDER_CHARGE_RESET:
+      return {}
+    default:
+      return state
+  }
+}
+
+export const orderBilingReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ORDER_BILLING_REQUEST:
+      return {
+        loading: true,
+      }
+    case ORDER_BILLING_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      }
+    case ORDER_BILLING_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      }
+    case ORDER_BILLING_RESET:
       return {}
     default:
       return state

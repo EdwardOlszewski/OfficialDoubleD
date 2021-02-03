@@ -10,9 +10,7 @@ import {
   ORDER_DELIVER_RESET,
 } from '../constants/orderConstants'
 import DateFormat from '../components/DateFormat'
-import { Elements } from '@stripe/react-stripe-js'
-import PaymentForm from '../components/PaymentForm'
-import { stripePromise } from '../constants/stripeConstants'
+
 import Meta from '../components/Meta'
 
 const OrderScreen = ({ match, history }) => {
@@ -232,22 +230,6 @@ const OrderScreen = ({ match, history }) => {
                     )}
                 </ListGroup>
               </Card>
-
-              {!order.isPaid && userInfo._id === order.user._id ? (
-                <Card style={{ marginTop: '2rem' }}>
-                  <ListGroup variant='flush' style={{ textAlign: 'center' }}>
-                    <ListGroup.Item>
-                      <h2>Payment</h2>
-                    </ListGroup.Item>
-
-                    <ListGroup.Item>
-                      <Elements stripe={stripePromise}>
-                        <PaymentForm />
-                      </Elements>
-                    </ListGroup.Item>
-                  </ListGroup>
-                </Card>
-              ) : null}
             </Col>
           </Row>
         </div>
