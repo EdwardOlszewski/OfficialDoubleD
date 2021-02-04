@@ -24,11 +24,13 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-async-handler": "^1.1.4",
+    "i": "^0.3.6",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.6",
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
     "multer-s3": "^2.9.0",
+    "npm": "^7.5.2",
     "stripe": "^8.129.0"
   },
   "devDependencies": {

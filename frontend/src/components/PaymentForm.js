@@ -1,39 +1,19 @@
-import React, { useEffect } from 'react'
-import { Form, Button, ListGroup } from 'react-bootstrap'
+import React from 'react'
+import { Form, Button } from 'react-bootstrap'
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { useSelector, useDispatch } from 'react-redux'
-import { payOrder, cardCharge } from '../actions/orderActions'
-import { ORDER_CHARGE_RESET } from '../constants/orderConstants'
-import Loader from '../components/Loader'
+import { cardCharge } from '../actions/orderActions'
 
-const PaymentForm = () => {
+const PaymentForm = ({ updateBillingInfo, billingDetails, history }) => {
   const stripe = useStripe()
   const elements = useElements()
   const dispatch = useDispatch()
 
-  const orderCharge = useSelector((state) => state.orderCharge)
-  const { loading, success } = orderCharge
-
-  const orderPay = useSelector((state) => state.orderPay)
-  const { loading: orderPayLoading } = orderPay
-
   const orderDetails = useSelector((state) => state.orderDetails)
   const { order } = orderDetails
 
-  const billingDetails = {
-    name: 'Ed',
-    email: 'olszewski.edward@hotmail.com',
-    address: {
-      city: 'burbank',
-      line1: '7930 Long Ave',
-      state: 'Ill',
-      postal_code: '60459',
-    },
-  }
-
   const handleSubmit = async (e) => {
     e.preventDefault()
-
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: 'card',
       card: elements.getElement(CardElement),
@@ -43,33 +23,27 @@ const PaymentForm = () => {
     if (!error) {
       const { id } = paymentMethod
       var amount = parseInt(order.totalPrice * 100)
-      dispatch(cardCharge(id, amount, order._id, billingDetails))
+      dispatch(cardCharge(id, amount, order._id))
     }
   }
 
-  useEffect(() => {
-    if (success) {
-      dispatch({ type: ORDER_CHARGE_RESET })
-      dispatch(payOrder(order._id))
-    }
-  }, [dispatch, success, order._id])
-
   return (
-    <Form id='payment-form' onSubmit={handleSubmit}>
-      {loading || orderPayLoading ? (
-        <Loader />
-      ) : (
-        <div>
-          <ListGroup.Item>
-            <CardElement />
-          </ListGroup.Item>
-          <ListGroup.Item>
-            <Button type='button' className='btn-block' onClick={handleSubmit}>
-              Pay
-            </Button>
-          </ListGroup.Item>
-        </div>
-      )}
+    <Form id='payment-form2' onSubmit={handleSubmit}>
+      <Form.Label>Card Number</Form.Label>
+      <div
+        id='card-element'
+        className='form-control'
+        style={{ paddingTop: '1rem' }}
+      >
+        <CardElement />
+      </div>
+      <Button
+        style={{ marginTop: '2rem' }}
+        type='submit'
+        onClick={() => updateBillingInfo()}
+      >
+        Submit Payment
+      </Button>
     </Form>
   )
 }

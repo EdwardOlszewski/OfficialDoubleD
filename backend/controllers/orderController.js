@@ -78,29 +78,6 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
   }
 })
 
-// @desc    Update order to paid
-// @route   PUT /api/orders/:id/pay
-// @access  Private
-const updateOrderBilling = asyncHandler(async (req, res) => {
-  const order = await Order.findById(req.params.id)
-  const { name, email, city, street, state, postal_code } = req.body
-
-  if (order) {
-    order.billingDetails.name = name
-    order.billingDetails.email = email
-    order.billingDetails.address.city = city
-    order.billingDetails.address.line1 = street
-    order.billingDetails.address.state = state
-    order.billingDetails.address.postal_code = postal_code
-
-    const updatedOrder = await order.save()
-    res.json(updatedOrder)
-  } else {
-    res.status(404)
-    throw new Error('Order billing info not updated')
-  }
-})
-
 // @desc    Update order to delivered
 // @route   GET /api/orders/:id/deliver
 // @access  Private/Admin
@@ -136,6 +113,48 @@ const getOrders = asyncHandler(async (req, res) => {
   res.json(orders)
 })
 
+// ----- Billing ------ //
+
+// @desc    Update order billing details
+// @route   PUT /api/billing/:id
+// @access  Private
+const updateOrderBilling = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id)
+  const { name, email, address } = req.body
+
+  if (order) {
+    order.billingDetails.name = name
+    order.billingDetails.email = email
+    order.billingDetails.address.city = address.city
+    order.billingDetails.address.line1 = address.line1
+    order.billingDetails.address.state = address.state
+    order.billingDetails.address.postal_code = address.postal_code
+
+    const updatedOrder = await order.save()
+    res.json(updatedOrder)
+  } else {
+    res.status(404)
+    throw new Error('Order billing info not updated')
+  }
+})
+
+// @desc    Get order billing details by ID
+// @route   GET /api/billing/:id
+// @access  Private
+const getBillingDetailsById = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id).populate(
+    'user',
+    'name email'
+  )
+
+  if (order) {
+    res.json(order)
+  } else {
+    res.status(404)
+    throw new Error('Order not found')
+  }
+})
+
 export {
   addOrderItems,
   getOrderById,
@@ -144,4 +163,5 @@ export {
   getMyOrders,
   getOrders,
   updateOrderBilling,
+  getBillingDetailsById,
 }
