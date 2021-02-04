@@ -1,9 +1,13 @@
 {
-  "name": "neonmegshop",
+  "name": "dd-shop",
   "version": "1.0.0",
-  "description": "NeonMegs Shopping App",
+  "description": "DDShopping App",
   "main": "server.js",
   "type": "module",
+  "engine": {
+    "node": "14.13.1.",
+    "npm": "7.5.2"
+  },
   "scripts": {
     "start": "node backend/server",
     "server": "nodemon backend/server",
