@@ -28,7 +28,7 @@ const PaymentForm = ({ updateBillingInfo, billingDetails, history }) => {
   }
 
   return (
-    <Form id='payment-form2' onSubmit={handleSubmit}>
+    <Form id='payment-form' onSubmit={handleSubmit}>
       <Form.Label>Card Number</Form.Label>
       <div
         id='card-element'

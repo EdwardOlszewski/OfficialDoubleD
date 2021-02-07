@@ -12,11 +12,8 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { ORDER_CHARGE_RESET } from '../constants/orderConstants'
 import { payOrder } from '../actions/orderActions'
-import { loadStripe } from '@stripe/stripe-js'
+import { stripePromise } from '../constants/stripeConstants'
 
-export const stripePromise = loadStripe(
-  'pk_test_51I5HR9BJt6LFU7zJrUW8EnuFwM1fOWCRyIm6SbY14gagTYGjMO2GqEOAHZQ22cTh9nMLVSlo92QeaylMmJj7LHw000oFtpREg7'
-)
 const PaymentScreen = ({ match, history }) => {
   // Assign useDispatch hook to dispatch actions
   const dispatch = useDispatch()
@@ -181,6 +178,12 @@ const PaymentScreen = ({ match, history }) => {
                   ></Form.Control>
                 </Form.Group>
               </Row>
+              <Elements stripe={stripePromise}>
+                <PaymentForm
+                  billingDetails={billingDetails}
+                  updateBillingInfo={updateBillingInfo}
+                />
+              </Elements>
             </Form>
           </FormContainer>
         </>
@@ -190,13 +193,3 @@ const PaymentScreen = ({ match, history }) => {
 }
 
 export default PaymentScreen
-
-/*
-
-            <Elements stripe={stripePromise}>
-              <PaymentForm
-                billingDetails={billingDetails}
-                updateBillingInfo={updateBillingInfo}
-              />
-            </Elements>
-            */
