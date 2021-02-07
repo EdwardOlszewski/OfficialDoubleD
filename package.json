@@ -20,22 +20,21 @@
   "author": "Edward Olszewski",
   "license": "MIT",
   "dependencies": {
-    "@stripe/react-stripe-js": "^1.1.2",
-    "@stripe/stripe-js": "^1.11.0",
+    "@stripe/react-stripe-js": "^1.2.2",
+    "@stripe/stripe-js": "^1.12.1",
     "aws-sdk": "^2.799.0",
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-async-handler": "^1.1.4",
-    "i": "^0.3.6",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.6",
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
     "multer-s3": "^2.9.0",
     "npm": "^7.5.2",
-    "stripe": "^8.129.0"
+    "stripe": "^8.134.0"
   },
   "devDependencies": {
     "concurrently": "^5.3.0",

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Row, Col, Container, Card } from 'react-bootstrap'
+import { Row, Col, Container } from 'react-bootstrap'
 import Events from '../components/Events'
 import ImageCarousel from '../components/ImageCarousel'
 import { listEvents } from '../actions/eventActions'

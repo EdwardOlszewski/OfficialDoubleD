@@ -8,7 +8,6 @@ import { createOrder } from '../actions/orderActions'
 import { ORDER_CREATE_RESET } from '../constants/orderConstants'
 import { USER_DETAILS_RESET } from '../constants/userConstants'
 import Meta from '../components/Meta'
-import { CART_REMOVE_ITEM } from '../constants/cartConstants'
 
 const PlaceOrderScreen = ({ history }) => {
   // Assign useDispatch hook to dispatch actions
@@ -41,7 +40,7 @@ const PlaceOrderScreen = ({ history }) => {
       dispatch({ type: USER_DETAILS_RESET })
       dispatch({ type: ORDER_CREATE_RESET })
     }
-  }, [history, success, dispatch])
+  }, [history, success, dispatch, order])
 
   // Function to place order on submit
   const placeOrderHandler = () => {

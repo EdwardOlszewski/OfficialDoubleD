@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Card, ListGroup, Col, Row } from 'react-bootstrap'
+import { Form, Col, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import FormContainer from '../components/FormContainer'
 import CheckoutSteps from '../components/CheckoutSteps'
@@ -7,13 +7,16 @@ import Meta from '../components/Meta'
 import { updateBilling } from '../actions/orderActions'
 import { Elements } from '@stripe/react-stripe-js'
 import PaymentForm from '../components/PaymentForm'
-import { stripePromise } from '../constants/stripeConstants'
 import { getOrderDetails } from '../actions/orderActions'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { ORDER_CHARGE_RESET } from '../constants/orderConstants'
 import { payOrder } from '../actions/orderActions'
+import { loadStripe } from '@stripe/stripe-js'
 
+export const stripePromise = loadStripe(
+  'pk_test_51I5HR9BJt6LFU7zJrUW8EnuFwM1fOWCRyIm6SbY14gagTYGjMO2GqEOAHZQ22cTh9nMLVSlo92QeaylMmJj7LHw000oFtpREg7'
+)
 const PaymentScreen = ({ match, history }) => {
   // Assign useDispatch hook to dispatch actions
   const dispatch = useDispatch()
@@ -31,9 +34,6 @@ const PaymentScreen = ({ match, history }) => {
 
   const orderCharge = useSelector((state) => state.orderCharge)
   const { loading: chargeLoading, success: chargeSuccess } = orderCharge
-
-  const orderBilling = useSelector((state) => state.orderBilling)
-  const { loading: billingLoading } = orderBilling
 
   // Declare new state variables and functions
   const [firstName, setFirstName] = useState('')
@@ -77,18 +77,11 @@ const PaymentScreen = ({ match, history }) => {
       dispatch({ type: ORDER_CHARGE_RESET })
       dispatch(payOrder(orderId))
     }
-  }, [
-    dispatch,
-    ORDER_CHARGE_RESET,
-    orderId,
-    order,
-    history,
-    userInfo,
-    chargeSuccess,
-  ])
+  }, [dispatch, orderId, order, history, userInfo, chargeSuccess])
 
   return (
     <div className='content'>
+      <Elements stripe={stripePromise}></Elements>
       {loading || chargeLoading ? (
         <Loader />
       ) : error ? (
@@ -189,13 +182,6 @@ const PaymentScreen = ({ match, history }) => {
                 </Form.Group>
               </Row>
             </Form>
-
-            <Elements stripe={stripePromise}>
-              <PaymentForm
-                billingDetails={billingDetails}
-                updateBillingInfo={updateBillingInfo}
-              />
-            </Elements>
           </FormContainer>
         </>
       )}
@@ -206,12 +192,11 @@ const PaymentScreen = ({ match, history }) => {
 export default PaymentScreen
 
 /*
-   <Button
-                      type='submit'
-                      className='btn-block'
-                      form='payment-form2'
-                      onClick={PaymentForm.handleSubmit}
-                    >
-                      Pay
-                    </Button>
-                    */
+
+            <Elements stripe={stripePromise}>
+              <PaymentForm
+                billingDetails={billingDetails}
+                updateBillingInfo={updateBillingInfo}
+              />
+            </Elements>
+            */
