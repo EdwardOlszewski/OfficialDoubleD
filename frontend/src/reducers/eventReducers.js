@@ -18,13 +18,14 @@ import {
   EVENT_CREATE_RESET,
 } from '../constants/eventConstants'
 
-export const eventListReducer = (state = { events: [] }, action) => {
+export const eventListReducer = (state = {}, action) => {
   switch (action.type) {
     case EVENT_LIST_REQUEST:
-      return { loading: true, events: [] }
+      return { loading: true, success: false }
     case EVENT_LIST_SUCCESS:
       return {
         loading: false,
+        success: true,
         events: action.payload.events,
       }
     case EVENT_LIST_FAIL:

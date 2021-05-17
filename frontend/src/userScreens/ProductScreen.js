@@ -17,8 +17,9 @@ const ProductScreen = ({ history, match }) => {
   const dispatch = useDispatch()
 
   // Declare new state variables and functions
-  const [qty, setQty] = useState(1)
-  const [DDColor, setDDColor] = useState('Black')
+  const [qty, setQty] = useState(0)
+  const [DDColor, setDDColor] = useState('')
+  const [size, setSize] = useState('')
   const [rating, setRating] = useState(0)
   const [comment, setComment] = useState('')
 
@@ -53,7 +54,9 @@ const ProductScreen = ({ history, match }) => {
   // Function to be called on add to cart submit
   const addToCartHandler = () => {
     setDDColor(DDColor)
-    history.push(`/cart/${match.params.id}?qty=${qty}&DDColor=${DDColor}`)
+    history.push(
+      `/cart/${match.params.id}?qty=${qty}&DDColor=${DDColor}&size=${size}`
+    )
   }
 
   // Function to be called after create review submit
@@ -132,61 +135,85 @@ const ProductScreen = ({ history, match }) => {
                       </Row>
                     </ListGroup.Item>
 
-                    {product.countInStock > 0 && (
-                      <ListGroup.Item>
-                        <Row>
-                          <Col style={{ marginTop: '8px' }}>Qty:</Col>
-                          <Col>
-                            <Form.Control
-                              as='select'
-                              value={qty}
-                              onChange={(e) => setQty(e.target.value)}
-                            >
-                              {[...Array(product.countInStock).keys()].map(
-                                (x) => (
-                                  <option key={x + 1} value={x + 1}>
-                                    {x + 1}
-                                  </option>
-                                )
-                              )}
-                            </Form.Control>
-                          </Col>
-                        </Row>
-                      </ListGroup.Item>
-                    )}
-
                     <ListGroup.Item>
                       <Row>
-                        <Col style={{ marginTop: '8px' }}>Emblem: </Col>
+                        <Col style={{ marginTop: '8px' }}>Size: </Col>
                         <Col>
                           <Form.Control
                             as='select'
-                            value={DDColor}
-                            onChange={(e) => setDDColor(e.target.value)}
+                            value={size}
+                            onChange={(e) => setSize(e.target.value)}
                           >
-                            <option>Black</option>
-                            <option>White</option>
-                            <option>Red</option>
-                            <option>Yellow</option>
-                            <option>Aqua</option>
-                            <option>Lavender</option>
-                            <option>Hot Pink</option>
-                            <option>Neon Green</option>
+                            <option>Pick Size</option>
+                            <option>Small</option>
+                            <option>Medium</option>
+                            <option>Large</option>
+                            <option>XLarge</option>
                           </Form.Control>
                         </Col>
                       </Row>
                     </ListGroup.Item>
 
-                    <ListGroup.Item>
-                      <Button
-                        onClick={addToCartHandler}
-                        className='btn-block'
-                        type='button'
-                        disabled={product.countInStock === 0}
-                      >
-                        Add To Cart
-                      </Button>
-                    </ListGroup.Item>
+                    {!size ||
+                      (product.countInStock > 0 && (
+                        <ListGroup.Item>
+                          <Row>
+                            <Col style={{ marginTop: '8px' }}>Qty:</Col>
+                            <Col>
+                              <Form.Control
+                                as='select'
+                                value={qty}
+                                onChange={(e) => setQty(e.target.value)}
+                              >
+                                {[...Array(product.countInStock).keys()].map(
+                                  (x) => (
+                                    <option key={x + 1} value={x + 1}>
+                                      {x + 1}
+                                    </option>
+                                  )
+                                )}
+                              </Form.Control>
+                            </Col>
+                          </Row>
+                        </ListGroup.Item>
+                      ))}
+
+                    {qty ? (
+                      <ListGroup.Item>
+                        <Row>
+                          <Col style={{ marginTop: '8px' }}>Emblem: </Col>
+                          <Col>
+                            <Form.Control
+                              as='select'
+                              value={DDColor}
+                              onChange={(e) => setDDColor(e.target.value)}
+                            >
+                              <option>Black</option>
+                              <option>White</option>
+                              <option>Red</option>
+                              <option>Yellow</option>
+                              <option>Aqua</option>
+                              <option>Lavender</option>
+                              <option>Hot Pink</option>
+                              <option>Neon Green</option>
+                            </Form.Control>
+                          </Col>
+                        </Row>
+                      </ListGroup.Item>
+                    ) : null}
+
+                    {size && qty && DDColor ? (
+                      <ListGroup.Item>
+                        <Button
+                          onClick={addToCartHandler}
+                          className='btn-block'
+                          type='button'
+                          disabled={product.countInStock === 0}
+                        >
+                          Add To Cart
+                        </Button>
+                      </ListGroup.Item>
+                    ) : null}
                   </ListGroup>
                 </Card>
               </ListGroup>

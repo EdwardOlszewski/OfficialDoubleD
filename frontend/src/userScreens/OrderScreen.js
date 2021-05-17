@@ -202,7 +202,7 @@ const OrderScreen = ({ match, history }) => {
                           Shipped on: {' ' + DateFormat(order.deliveredAt)}
                         </Message>
                       ) : (
-                        <Message variant='danger'>Not Shipped Yet</Message>
+                        <Message color='red'>Not Shipped Yet</Message>
                       )}
                     </ListGroup.Item>
                   </ListGroup>

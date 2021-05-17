@@ -33,11 +33,15 @@ const EventScreen = ({ history, match }) => {
       ) : (
         <>
           <Row>
-            <Col md={6} style={{ marginTop: '3rem' }}>
+            <Col xs={12} lg={6} style={{ marginTop: '3rem' }}>
               <GoogleMap address={event.address} />
             </Col>
 
-            <Col md={5} style={{ marginTop: '5rem', textAlign: 'left' }}>
+            <Col
+              xs={12}
+              lg={6}
+              style={{ marginTop: '3rem', textAlign: 'left' }}
+            >
               <Card className='product'>
                 <Card.Body>
                   <ListGroup>
@@ -59,6 +63,10 @@ const EventScreen = ({ history, match }) => {
                     <ListGroup.Item style={{ fontSize: '120%' }}>
                       <p className='eventTitle'>Price:</p>$
                       {(Math.round(event.price * 100) / 100).toFixed(2)}
+                    </ListGroup.Item>
+                    <ListGroup.Item style={{ fontSize: '120%' }}>
+                      <p className='eventTitle'>Tickets:</p>
+                      <a href={event.url}> {event.url}</a>
                     </ListGroup.Item>
                   </ListGroup>
                 </Card.Body>

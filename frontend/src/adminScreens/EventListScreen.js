@@ -19,7 +19,7 @@ const EventListScreen = ({ history, match }) => {
 
   // Declare new state variables using useState hook
   const eventList = useSelector((state) => state.eventList)
-  const { loading, error, events, page, pages } = eventList
+  const { loading, success, error, events, page, pages } = eventList
 
   // Declare new state variables using useState hook
   const eventDelete = useSelector((state) => state.eventDelete)
@@ -89,7 +89,7 @@ const EventListScreen = ({ history, match }) => {
       {errorDelete && <Message variant='danger'>{errorDelete}</Message>}
       {loadingCreate && <Loader />}
       {errorCreate && <Message variant='danger'>{errorCreate}</Message>}
-      {loading ? (
+      {!success ? (
         <Loader />
       ) : error ? (
         <Message variant='danger'>{error}</Message>

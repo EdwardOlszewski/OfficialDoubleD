@@ -12,6 +12,8 @@ import userRoutes from './routes/userRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
 import uploadRoutes from './routes/imageUploadRoutes.js'
 import chargeRoutes from './routes/chargeRoutes.js'
+import carouselRoutes from './routes/carouselRoutes.js'
+import emailRoutes from './routes/emailRoutes.js'
 
 dotenv.config()
 
@@ -31,6 +33,8 @@ app.use('/api/users', userRoutes)
 app.use('/api/orders', orderRoutes)
 app.use('/api/upload', uploadRoutes)
 app.use('/api/charge', chargeRoutes)
+app.use('/api/carousel', carouselRoutes)
+app.use('/api/email', emailRoutes)
 
 const __dirname = path.resolve()
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))

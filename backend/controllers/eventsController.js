@@ -12,6 +12,8 @@ const createEvent = asyncHandler(async (req, res) => {
     time: 'New Time',
     date: '01/01/21',
     price: 0.0,
+    url: 'New Url',
+    imageUrl: 'empty',
     isPublished: false,
   })
   const createdEvent = await event.save()
@@ -37,7 +39,16 @@ const deleteEvent = asyncHandler(async (req, res) => {
 // @route   PUT /api/events/:id
 // @access  Private/Admin
 const updateEvent = asyncHandler(async (req, res) => {
-  const { venue, address, time, date, price, isPublished } = req.body
+  const {
+    venue,
+    address,
+    time,
+    date,
+    price,
+    url,
+    imageUrl,
+    isPublished,
+  } = req.body
 
   const event = await Event.findById(req.params.id)
 
@@ -47,6 +58,8 @@ const updateEvent = asyncHandler(async (req, res) => {
     event.time = time
     event.date = date
     event.price = price
+    event.url = url
+    event.imageUrl = imageUrl
     event.isPublished = isPublished
 
     const updatedEvent = await event.save()

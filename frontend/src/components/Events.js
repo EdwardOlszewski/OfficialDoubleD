@@ -18,6 +18,14 @@ const Events = ({ event }) => {
           >
             {DateFormat(event.date)}
           </Card.Header>
+
+          <Link to={`/events/${event._id}`}>
+            <Card.Img
+              src={event.imageUrl}
+              variant='top'
+              style={{ padding: '1rem' }}
+            />
+          </Link>
           <ListGroup variant='flush' style={{ fontSize: '115%' }}>
             <ListGroup.Item>{event.venue}</ListGroup.Item>
             <ListGroup.Item>{event.address}</ListGroup.Item>

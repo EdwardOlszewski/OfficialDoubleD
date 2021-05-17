@@ -21,6 +21,8 @@ import EventListScreen from './adminScreens/EventListScreen'
 import EventEditScreen from './adminScreens/EventEditScreen'
 import EventScreen from './userScreens/EventScreen'
 import GearScreen from './userScreens/GearScreen'
+import CarouselListScreen from './adminScreens/CarouselListScreen'
+import CarouselImageUploadScreen from './adminScreens/CarouselImageUploadScreen'
 
 const App = () => {
   return (
@@ -69,6 +71,14 @@ const App = () => {
           />
           <Route path='/admin/events/:id/edit' component={EventEditScreen} />
           <Route path='/events/:id' component={EventScreen} />
+
+          <Route path='/admin/carousel' component={CarouselListScreen} exact />
+          <Route
+            path='/admin/carousel/upload'
+            component={CarouselImageUploadScreen}
+            exact
+          />
+
           <Route path='/' component={HomeScreen} exact />
         </div>
       </main>

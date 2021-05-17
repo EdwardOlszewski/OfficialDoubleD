@@ -25,6 +25,14 @@ const eventSchema = mongoose.Schema(
     price: {
       type: Number,
     },
+    url: {
+      type: String,
+      required: true,
+    },
+    imageUrl: {
+      type: String,
+      required: true,
+    },
     isPublished: {
       type: Boolean,
     },

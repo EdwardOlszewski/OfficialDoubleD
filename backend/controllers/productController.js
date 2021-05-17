@@ -5,7 +5,7 @@ import Product from '../models/productModel.js'
 // @route   GET /api/products
 // @access  Public
 const getProducts = asyncHandler(async (req, res) => {
-  const pageSize = 10
+  const pageSize = 12
   const page = Number(req.query.pageNumber) || 1
 
   const keyword = req.query.keyword
@@ -69,6 +69,7 @@ const createProduct = asyncHandler(async (req, res) => {
     numReviews: 0,
     description: 'Sample description',
     DDColor: 'black',
+    size: 'small',
     isPublished: false,
   })
 
@@ -90,6 +91,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     countInStock,
     published,
     DDColor,
+    size,
   } = req.body
 
   const product = await Product.findById(req.params.id)
@@ -104,6 +106,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     product.countInStock = countInStock
     product.isPublished = published
     product.DDColor = DDColor
+    product.size = size
 
     const updatedProduct = await product.save()
     res.json(updatedProduct)

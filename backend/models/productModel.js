@@ -68,6 +68,10 @@ const productSchema = mongoose.Schema(
       type: String,
       default: 'Black',
     },
+    size: {
+      type: String,
+      default: 'sm',
+    },
     isPublished: {
       type: Boolean,
     },

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Form, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
+import { sendRegisterEmail } from '../actions/emailActions'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
@@ -24,12 +25,17 @@ const RegisterScreen = ({ location, history }) => {
 
   // Go to userRegister in the state and pull out information
   const userRegister = useSelector((state) => state.userRegister)
-  const { loading, error, userInfo } = userRegister
+  const { success, loading, error, userInfo } = userRegister
 
   // useEffect hook called after render
   useEffect(() => {
     if (userInfo) {
       history.push(redirect)
+    }
+    if (success) {
+      const name = userInfo.firstName + ' ' + userInfo.lastName
+      const email = userInfo.email
+      dispatch(sendRegisterEmail(name, email))
     }
   }, [history, userInfo, redirect])
 

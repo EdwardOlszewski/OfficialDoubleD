@@ -30,6 +30,10 @@ const CartScreen = ({ match, location, history }) => {
   const DDColor = location.search
     ? String(location.search.slice(1).split('&')[1].split('=')[1])
     : 'black'
+  // Get the size from the URL
+  const size = location.search
+    ? String(location.search.slice(1).split('&')[2].split('=')[1])
+    : 'small'
 
   // Go to the cart in the state and select the cartItems
   const cart = useSelector((state) => state.cart)
@@ -38,9 +42,9 @@ const CartScreen = ({ match, location, history }) => {
   // useEffect hook to do something
   useEffect(() => {
     if (productId) {
-      dispatch(addToCart(productId, qty, DDColor))
+      dispatch(addToCart(productId, qty, DDColor, size))
     }
-  }, [dispatch, productId, qty, DDColor])
+  }, [dispatch, productId, qty, DDColor, size])
 
   // Function to remove item from cart
   const removeFromCartHandler = (id) => {
@@ -88,16 +92,20 @@ const CartScreen = ({ match, location, history }) => {
                             {item.name}
                           </Link>
                           <p> Emblem: {item.DDColor}</p>
+                          <p style={{ marginTop: '-20px' }}>
+                            {' '}
+                            Size: {item.size}
+                          </p>
                         </Col>
 
-                        <Col md={2} style={{ marginTop: '2.5rem' }}>
+                        <Col xs={4} md={2} style={{ marginTop: '2.5rem' }}>
                           <div className='space'></div>
                           <p style={{ fontSize: '120%', color: 'black' }}>
                             ${item.price}
                           </p>
                         </Col>
 
-                        <Col sm={1} lg={3} style={{ marginTop: '2rem' }}>
+                        <Col xs={4} md={2} lg={3} style={{ marginTop: '2rem' }}>
                           <div className='trash-button'>
                             <Form.Control
                               as='select'
@@ -119,7 +127,9 @@ const CartScreen = ({ match, location, history }) => {
                               ))}
                             </Form.Control>
                           </div>
+                        </Col>
 
+                        <Col xs={4} md={1} style={{ marginTop: '2rem' }}>
                           <div className='trash-button'>
                             <Button
                               type='button'

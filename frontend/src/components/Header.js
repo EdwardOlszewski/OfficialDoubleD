@@ -3,6 +3,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Navbar, Nav, NavDropdown, Image } from 'react-bootstrap'
 import { logout } from '../actions/userActions'
+import DDLogo from './DD.png'
+import emailIcon from '../icons/email.png'
+import facebookIcon from '../icons/facebook.png'
+import instaIcon from '../icons/instagram.png'
+import snapIcon from '../icons/snapchat.png'
 
 const Header = () => {
   const dispatch = useDispatch()
@@ -18,7 +23,7 @@ const Header = () => {
     <Navbar bg='primary' variant='dark' expand='lg'>
       <LinkContainer to='/' exact>
         <Navbar.Brand className='ml-5'>
-          <Image src={require('./DD.png')}></Image>
+          <Image src={DDLogo}></Image>
         </Navbar.Brand>
       </LinkContainer>
 
@@ -71,6 +76,9 @@ const Header = () => {
               <LinkContainer to='/admin/eventlist'>
                 <NavDropdown.Item>Events</NavDropdown.Item>
               </LinkContainer>
+              <LinkContainer to='/admin/carousel'>
+                <NavDropdown.Item>Carousel Images</NavDropdown.Item>
+              </LinkContainer>
             </NavDropdown>
           )}
         </Nav>
@@ -79,19 +87,19 @@ const Header = () => {
             href='https://www.instagram.com/doubledofficial__/'
             className='icon'
           >
-            <Image src={require('../icons/instagram.png')}></Image>
+            <Image src={instaIcon}></Image>
           </a>
           <a
             href='https://www.facebook.com/Double-D-110789907445940/?__nodl&ref=www.facebook.com'
             className='icon'
           >
-            <Image src={require('../icons/facebook.png')}></Image>
+            <Image src={facebookIcon}></Image>
           </a>
           <a href='snapchat://add/DOUBLEDOFFICIAL__' className='icon'>
-            <Image src={require('../icons/snapchat.png')}></Image>
+            <Image src={snapIcon}></Image>
           </a>
           <a href='mailto:doubledoff28@gmail.com' className='icon'>
-            <Image src={require('../icons/email.png')}></Image>
+            <Image src={emailIcon}></Image>
           </a>
         </div>
       </Navbar.Collapse>
@@ -100,9 +108,3 @@ const Header = () => {
 }
 
 export default Header
-
-/*
-<Form inline className='mr-5'>
-          <Route render={({ history }) => <SearchBox history={history} />} />
-        </Form>
-        */

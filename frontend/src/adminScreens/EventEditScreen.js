@@ -5,6 +5,7 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
 import { listEventDetails, updateEvent } from '../actions/eventActions'
+import { uploadImage } from '../actions/imageActions'
 import { EVENT_UPDATE_RESET } from '../constants/eventConstants'
 import Meta from '../components/Meta'
 
@@ -21,7 +22,12 @@ const EventEditScreen = ({ match, history }) => {
   const [time, setTime] = useState('')
   const [date, setDate] = useState('')
   const [price, setPrice] = useState(0)
+  const [url, setUrl] = useState('')
+  const [imageUrl, setImgUrl] = useState('')
   const [isPublished, setIsPublished] = useState(false)
+
+  const [image, setImage] = useState('')
+  const [fileName, setFileName] = useState('Choose an image to upload...')
 
   // Go to the state and pull out information from eventDetails
   const eventDetails = useSelector((state) => state.eventDetails)
@@ -34,6 +40,20 @@ const EventEditScreen = ({ match, history }) => {
     error: errorUpdate,
     success: successUpdate,
   } = eventUpdate
+
+  // Go to the state and pull out information from imageUpload
+  const imageUpload = useSelector((state) => state.imageUpload)
+  const {
+    loading: loadingImg,
+    error: errorImg,
+    success: successImg,
+    imageURL,
+  } = imageUpload
+
+  const uploadImageHandler = async ({ target: { files } }) => {
+    setFileName(files[0].name)
+    dispatch(uploadImage(files[0]))
+  }
 
   // useEffect hook to do something after render
   useEffect(() => {
@@ -49,10 +69,15 @@ const EventEditScreen = ({ match, history }) => {
         setTime(event.time)
         setDate(event.date)
         setPrice(event.price)
+        setUrl(event.url)
+        setImgUrl(event.imageUrl)
         setIsPublished(event.isPublished)
       }
     }
-  }, [dispatch, history, eventId, event, successUpdate])
+    if (successImg) {
+      setImgUrl(imageURL)
+    }
+  }, [dispatch, history, eventId, event, successUpdate, successImg])
 
   // Function  to run on submit
   const submitHandler = (e) => {
@@ -65,6 +90,8 @@ const EventEditScreen = ({ match, history }) => {
         time,
         date,
         price,
+        url,
+        imageUrl,
         isPublished,
       })
     )
@@ -130,6 +157,28 @@ const EventEditScreen = ({ match, history }) => {
               value={price}
               onChange={(e) => setPrice(e.target.value)}
             ></Form.Control>
+          </Form.Group>
+
+          <Form.Group controlId='url'>
+            <Form.Label>Url</Form.Label>
+            <Form.Control
+              type='text'
+              placeholder='Enter Url'
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+            ></Form.Control>
+          </Form.Group>
+
+          <Form.Group controlId='image'>
+            <Form.Label>Image</Form.Label>
+            <Form.File
+              id='image'
+              label={fileName}
+              custom
+              onChange={uploadImageHandler}
+            ></Form.File>
+            {loadingImg && <Loader />}
+            {errorImg && <Message variant='danger'>{errorImg}</Message>}
           </Form.Group>
 
           <Form.Group controlId='ispublished'>

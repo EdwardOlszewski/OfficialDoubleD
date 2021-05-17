@@ -38,6 +38,13 @@ import {
   orderBilingReducer,
 } from './reducers/orderReducers'
 
+import {
+  uploadImageReducer,
+  createCarouselImageReducer,
+  listCarouselImageReducer,
+  deleteCarouselImageReducer,
+} from './reducers/imageReducers.js'
+
 const reducer = combineReducers({
   eventCreate: eventCreateReducer,
   eventList: eventListReducer,
@@ -51,6 +58,10 @@ const reducer = combineReducers({
   productUpdate: productUpdateReducer,
   productReviewCreate: productReviewCreateReducer,
   productTopRated: productTopRatedReducer,
+  imageUpload: uploadImageReducer,
+  carouselImageCreate: createCarouselImageReducer,
+  carouselImageList: listCarouselImageReducer,
+  carouselImageDelete: deleteCarouselImageReducer,
   cart: cartReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
